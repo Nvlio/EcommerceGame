@@ -54,6 +54,26 @@ export default class ProdDB {
         }
     }
 
+    async GETVALOrder(tipo){
+        try{
+            
+            const conexao = await connectar();
+            let sqlCode;
+            sqlCode = "SELECT * FROM Produtos ORDER BY preco"
+            const [list] = await conexao.query(sqlCode)
+            const listaFim = []
+
+            for (let item of list) {
+                const modelo = new ProdMod(item.idProduto, item.nome, item.plataforma, item.preco, item.lancamento, item.distribuidora)
+                listaFim.push(modelo.ToJSON())
+            }
+
+            return listaFim
+        }catch(e){
+            return ({ resp: e })
+        }
+    }
+
     async GETVAL(id) {
 
         try {

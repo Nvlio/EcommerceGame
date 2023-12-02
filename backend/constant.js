@@ -1,6 +1,8 @@
 
-const lista= {
-    chave:'chaveTokenWeb123'
+const lista=(senha)=>{
+    return({
+            chave:senha
+    })
 }
 
 

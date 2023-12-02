@@ -15,11 +15,18 @@ export default class CompraControle {
 
     }
 
+    
+
     //função para pegar dados especificos
     async GETVal(req, resp) {
         if (req.method == "GET") {
             const id = req.params.id
+            //novo
             const modelo = new ComprasMod(id);
+            if (id=="quantidade"||id=="receita"){
+                const retorno = await  modelo.pegaOrganizado(id) 
+                return resp.json({itens:retorno})
+            }
             const resposta = await modelo.PegarValor()
 
             return resp.json({ itens:resposta })
@@ -34,8 +41,9 @@ export default class CompraControle {
             const body = req.body;
             const data = body.data;
             const qntd = body.qntd;
-            const valor = body.valor;
+            const valor = Math.ceil(Number(qntd) * Number(body.valor));
             const clientCPF = body.clientCPF;
+            //VAI TER QUE ATUALIZAR O FRONT PARA PASSAR O ID DA LOJA QUE VENDEU
             const lojaID = body.lojaID;
             const prodID = body.prodID;
             const endereco = body.endereco

@@ -22,6 +22,25 @@ export default class ClienteDB {
         }
     }
 
+    async Confere(email){
+        try {
+            const conexao = await connectar();
+            const sqlCode = "SELECT * FROM `clientes` WHERE email = ?";
+            const itens = [email]
+            const [list] = await conexao.query(sqlCode, itens)
+            const listaFim = []
+
+            for (let item of list) {
+                const modelo = new ClienteMod(item.cpf, item.nome, item.telefone, item.senha, item.email, item.endereco)
+                listaFim.push(modelo.ToJSON())
+            }
+
+            return listaFim
+        } catch (e) {
+            return ({ resp: 'e' })
+        }
+    }
+
     async GETVAL(cpf) {
 
         try {
@@ -38,7 +57,7 @@ export default class ClienteDB {
 
             return listaFim
         } catch (e) {
-            return ({ resp: e })
+            return ({ resp: 'e' })
         }
     }
 

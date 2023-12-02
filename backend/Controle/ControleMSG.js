@@ -26,7 +26,7 @@ export default class MSGControle {
             let resposta
             let modelo
             if (tipo != 'number') {
-                modelo = new MSGMod(null,null,null,null,null,tipo[0]);
+                modelo = new MSGMod(null,null,null,null,null,tipo);
                 resposta = await modelo.PegarValor()
             } else {
                 modelo = new MSGMod();

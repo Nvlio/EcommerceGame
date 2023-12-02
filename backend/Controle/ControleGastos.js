@@ -20,6 +20,10 @@ export default class GastoLojaControl {
         if (req.method == "GET") {
             const id = req.params.id
             const modelo = new GastoMod(id);
+            if (id == "valor"){
+                const retorno = await modelo.pegarOrganizado(id)
+                return resp.json({itens:retorno})
+            }
             const resposta = await modelo.PegarValor()
 
             return resp.json({ itens:resposta })

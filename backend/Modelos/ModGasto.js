@@ -12,11 +12,13 @@ export default class GastoMod {
         this.#data=Data
     };
 
-    ToJSON() {
+    ToJSON(loja,tipo) {
         return ({
            id:this.#id,
            valor:this.#valor,
-           data:this.#data
+           data:this.#data,
+           lojaId:loja,
+           tipo:tipo
         })
     }
 
@@ -31,6 +33,13 @@ export default class GastoMod {
         const resp = await dataBase.GETVAL(this.#id)
         return resp
     };
+
+    async pegarOrganizado(organizador){
+        
+        const dataBase = new GastoDB()
+        const resp = await dataBase.GETSORT(organizador)
+        return resp
+    }
 
     async Inserir() {
         const dataBase = new GastoDB()

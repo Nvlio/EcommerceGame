@@ -47,6 +47,18 @@ export default class ComprasMod{
         return resp
     };
 
+    async pegaOrganizado(organiza){
+        const dataBase = new CompraDB()
+        let valor
+        if (organiza=="quantidade"){
+            valor = "quantidade"
+        }else{
+            valor = "valor"
+        }
+        const resp = await dataBase.GETSORT(valor)
+        return resp    
+    }
+
     async Inserir(){
         const dataBase = new CompraDB()
         const resp = await dataBase.POST(this.#data_compra,this.#qntd,this.#Valor,this.#cliente_CPF,this.#Loja_ID,this.#Produto_ID,this.#endereco)

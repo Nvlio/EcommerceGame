@@ -7,18 +7,34 @@ export default class GastoDB {
 
         try {
             const conexao = await connectar();
-            const sqlCode = "SELECT * FROM gastos"
+            const sqlCode = "SELECT * FROM gastos JOIN gastosloja ON gastosloja.idgasto = gastos.idGastos"
             const [list] = await conexao.query(sqlCode)
             const listaFim = []
 
             for (let item of list) {
                 const modelo = new GastoMod(item.idGastos,item.valor,item.data)
-                listaFim.push(modelo.ToJSON())
+                listaFim.push(modelo.ToJSON(item.idLoja,item.tipo))
             }
 
             return listaFim
         } catch (e) {
             return ({ resp: e })
+        }
+    }
+
+    async GETSORT(sort){
+        try{
+            const conexao = await connectar()
+            const sqlCode = `SELECT * FROM gastos JOIN gastosloja ON gastosloja.idgasto = gastos.idGastos  ORDER BY ${sort} DESC`
+            const [retorno] = await conexao.query(sqlCode)
+            const listaFim = []
+            for (let item of retorno){
+                const modelo = new GastoMod(item.idGastos,item.valor,item.data)
+                listaFim.push(modelo.ToJSON(item.idLoja,item.tipo))
+            }
+            return listaFim
+        }catch(e){
+            return ({msg:'erro'})
         }
     }
 

@@ -28,7 +28,23 @@ export default class CompraDB {
         }
     }
 
-
+    async GETSORT(sort){
+        try{
+            const conexao = await connectar()
+            const sqlCode = `SELECT * FROM Compras ORDER BY ${sort} DESC`
+            const [retorno] = await conexao.query(sqlCode)
+            const listaFim = []
+            for (let item of retorno){
+                const modelo = new ComprasMod(item.id, item.data, item.quantidade, item.valor, item.clienteCPF, item.lojaID, item.produtoID)
+                const produto = new ProdDB()
+                const infoP = await produto.GETBasic(item.produtoID)
+                listaFim.push(modelo.ToJSON(infoP))
+            }
+            return listaFim
+        }catch(e){
+            return ({msg:'erro'})
+        }
+    }
 
     async GETVAL(id) {
 

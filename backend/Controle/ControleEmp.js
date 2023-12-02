@@ -51,7 +51,7 @@ export default class EmpregadoControle {
                 } else if (resposta.code) {
                     return resp.json({ msg: { message: resposta.code } })
                 } else {
-                    return resp.json({ resp: resposta })
+                    return resp.json({ resp: resposta.resposta,token:resposta.token })
                 }
             }
         }

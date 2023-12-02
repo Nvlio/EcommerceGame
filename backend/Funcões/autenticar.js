@@ -9,7 +9,8 @@ export default class Autenticador{
     async autenticar(valor){
         if (valor.email && valor.senha){
             try{
-                const token = Autenticacao.sign(valor,lista.chave,{expiresIn:60})
+                const chave = lista(valor.senha).chave
+                const token = Autenticacao.sign(valor,chave,{expiresIn:60})
                 return token
             }catch(err){
                 return 0

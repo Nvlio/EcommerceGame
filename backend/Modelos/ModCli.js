@@ -45,16 +45,21 @@ export default class ClienteMod{
     async Inserir(tipo){
         const dataBase = new ClienteDB()
         let resp;
-        let tokenAutenticacao
+        let tokenAutenticacao;
+        let resposta;
         const autentica = new Autenticador()
         if(tipo){
             resp= await dataBase.Login(this.#email,this.#senha)
-            tokenAutenticacao = await autentica.autenticar(resp)
-
-
         }else{
+            const verifica = await dataBase.Confere(this.#email)
+            const verifica2 = await dataBase.GETVAL(this.#cpf)
+            if (verifica.length!==0 && verifica2.length!==0){
+                return ({resposta:"false",token:undefined})
+            }
             resp = await dataBase.POST(this.#cpf,this.#nome,this.#telefone,this.#senha,this.#email,this.#endereco)
+            
         }
+        tokenAutenticacao = await autentica.autenticar({cpf:this.#cpf,nome:this.#nome,email:this.#email,telefoen:this.#telefone,senha:this.#senha,endereco:this.#endereco})
         console.log(resp)
         if(resp.resp){
             return {'resposta':resp.resp,'token':tokenAutenticacao}

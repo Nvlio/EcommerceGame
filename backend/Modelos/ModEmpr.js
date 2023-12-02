@@ -1,4 +1,5 @@
 import EmpregadoDB from "../Conexão/DBEmpreg.js"
+import Autenticador from "../Funcões/autenticar.js"
 
 
 export default class EmpregadoMod{
@@ -51,16 +52,19 @@ export default class EmpregadoMod{
 
     async Inserir(tipo){
         const dataBase = new EmpregadoDB()
+        const autenticacao = new Autenticador()
         let resp;
+        let token
         if(tipo){
             resp = await dataBase.Login(this.#email,this.#senha)
         }else{
             resp = await dataBase.POST(this.#cpf,this.#nome,this.#telefone,this.#senha,this.#email,this.#nivel,this.#endereco,this.#lojaID)
         }
+        token = await autenticacao.autenticar(resp)
         if(resp.resp){
             return resp.resp
         }else{
-            return resp
+            return ({resposta:resp,'token':token})
         }
     };
 
